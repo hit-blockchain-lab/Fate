@@ -22,9 +22,9 @@ The purpose of this contract is to link the blockchain address to the game playe
 
 #### State Data Structure
 
-`map[game_id, [Game Asset Contract address]]`: a mapping from game_id to Game Asset contract address list `[contract address1, contract address2, contract address3...]` 
+`game_asset_address`: `map[game_id, [Game Asset Contract address]]`. A mapping from game_id to Game Asset contract address list `[contract address1, contract address2, contract address3...]` 
 
-`map[address,[(game_id, game_id_account)]]`:a mapping from address to game information list `[(game_id_1, game_id_1_account), (game_id_2, game_id_2_account),...]`
+`account_asset`: `map[address,[(game_id, game_id_account)]]`. A mapping from address to game information list `[(game_id_1, game_id_1_account), (game_id_2, game_id_2_account),...]`
 
 #### Bind Function
 
@@ -56,6 +56,8 @@ The purpose of this contract is to store one game's assets state. One game could
 
 **TODO**: Need to design a structure to store assets data.
 
+#### Create Function
+
 #### Query Function
 
 TODO
@@ -66,7 +68,7 @@ Adding asset data to above structure.
 
 #### Sub Function
 
-Subing asset data to above structure.
+Subbing asset data to above structure.
 
 #### New Function
 
@@ -74,11 +76,11 @@ Append a new asset to list.
 
 #### Delete Function
 
-Remove a exist asset to list.
+Remove a exist asset from list.
 
 ## Asset Trade Contract
 
-The purpose of this contract is to handle trade
+The purpose of this contract is to handle trade. 
 
 #### State Data Structure
 
@@ -86,13 +88,69 @@ TODO
 
 #### Trade Function
 
-TODO
+Call Game Asset Contract's Add/Sub function to update asset state.
 
 ## Asset Rent Contract
 
+The purpose of this contract is to handle rent. 
+
 #### State Data Structure
 
+TODO
+
 #### Rent Function
+
+Call Asset Trade function twice and set rent condition.
+
+## Store Contract
+
+The purpose of this contract is to save store state for players. One player only build one store and maintain that. 
+
+#### State Data Structure
+
+`store_list`
+
+`store`
+
+`store_infos`
+
+`store_orders`
+
+`order`
+
+#### Build Function
+
+create `store`
+
+append `store` to `store_list`
+
+#### Destroy Function
+
+remove `store` from `store_list`
+
+delete `store`
+
+#### NewOrder Function
+
+create `order`
+
+append `order` to `store_orders`
+
+#### RevokeOrder Function
+
+remove `order` from `store_orders`
+
+delete `order`
+
+## Mall Contract(abandon)
+
+#### State Data Structure
+
+#### Append Function
+
+#### Remove Function
+
+#### Update Function
 
 ## Smart Wallet Contract
 
@@ -117,27 +175,5 @@ TODO
 #### BuyAsset Function
 
 #### ExchangeAsset Function
-
-## Store Contract
-
-#### State Data Structure
-
-#### Build Function
-
-#### Destroy Function
-
-#### NewOrder Function
-
-#### RevokeOrder Function
-
-## Mall Contract
-
-#### State Data Structure
-
-#### Append Function
-
-#### Remove Function
-
-#### Update Function
 
 ## 
