@@ -230,39 +230,103 @@ The purpose of this contract is to save store state for players. One player only
 
 #### State Data Structure
 
-`store_list`
+`store`: `struct{`
 
-`store`
+​			` id`
 
-`store_infos`
+​			`store_infos`
 
-`store_orders`
+​			`store_orders`
 
-`order`
+​		`}`
+
+`store_list`: `List[store1,store2,store3...]`
+
+`store_infos`: `struct{`
+
+​			`name`
+
+​			`owner_address`
+
+​			`open_date`
+
+​			`success_orders`
+
+​			`}`
+
+`store_orders`:`struct{`
+
+​			`orders_count`
+
+​			`orders`: `List[order1,order2,order3...]`
+
+​			`}`
+
+`order`:`struct{`
+
+​			`name`
+
+​			`id`
+
+​			`description`
+
+​			`time`
+
+​			`game_id`
+
+​			`asset_address`
+
+​			`asset_info`
+
+​			`asset_data`			
+
+​			`price`
+
+​			`isrent`
+
+​			`rent_time`
+
+`}`
 
 #### Build Function
 
-create `store`
+create `store`, and then append `store` to `store_list`
 
-append `store` to `store_list`
+```
+def build()
+```
+
+
 
 #### Destroy Function
 
-remove `store` from `store_list`
+remove `store` from `store_list`, and then delete `store`
 
-delete `store`
+```
+def destory()
+```
+
+
 
 #### NewOrder Function
 
-create `order`
+create `order`, and then append `order` to `store_orders`
 
-append `order` to `store_orders`
+```
+def neworder()
+```
+
+
 
 #### RevokeOrder Function
 
-remove `order` from `store_orders`
+remove `order` from `store_orders`, and then delete `order`
 
-delete `order`
+```
+def revokeorder()
+```
+
+
 
 ## Mall Contract(abandon)
 
