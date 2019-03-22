@@ -191,11 +191,19 @@ The purpose of this contract is to handle trade.
 
 #### State Data Structure
 
-TODO
+None
 
 #### Trade Function
 
 Call Game Asset Contract's Add/Sub function to update asset state.
+
+```
+def trade(address_src, address_tar, game_id_src, game_id_tar, game_asset_address_src, game_asset_address_tar, data_src, data_tar)
+	 TODO
+	
+```
+
+
 
 ## Asset Rent Contract
 
@@ -203,11 +211,18 @@ The purpose of this contract is to handle rent.
 
 #### State Data Structure
 
-TODO
+None
 
 #### Rent Function
 
 Call Asset Trade function twice and set rent condition.
+
+```
+def rent(address_src, address_tar, game_id_src, game_id_tar, game_asset_address_src, game_asset_address_tar, data_src, data_tar, rent_time)
+	TODO
+```
+
+
 
 ## Store Contract
 
