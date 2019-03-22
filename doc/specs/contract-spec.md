@@ -24,23 +24,80 @@ The purpose of this contract is to link the blockchain address to the game playe
 
 `game_asset_address`: `map[game_id, [Game Asset Contract address]]`. A mapping from game_id to Game Asset contract address list `[contract address1, contract address2, contract address3...]` 
 
+```
+int game_id
+uint64 Game_Asset_Contract_address
+map[int,list[uint64]] game_asset_address
+```
+
 `account_asset`: `map[address,[(game_id, game_id_account)]]`. A mapping from address to game information list `[(game_id_1, game_id_1_account), (game_id_2, game_id_2_account),...]`
+
+```
+int game_id
+uint64 address
+gameAccount game_id_account
+map[uint64,list[(int,gameAccount)]] account_asset
+```
 
 #### Bind Function
 
 Binding a game account to blockchain address. Append account information `(game_id, game_id_account)` to `map[address,[(game_id, game_id_account)]]`
 
+```
+def bind(address, game_id, game_id_account):
+	if address not in account_asset:
+    	account_asset[address] = [(game_id, game_id_account)]
+    else:
+    	account_asset[address].append((game_id, game_id_account))
+    return true
+```
+
 #### Unbind Function
 
 Unbinding a game account from blockchain address. Remove account information `(game_id, game_id_account)` from `map[address,[(game_id, game_id_account)]]`
+
+```
+def unbind(address, game_id, game_id_account):
+	if address not in account_asset:
+    	return false
+    else:
+    	account_asset[address].remove((game_id, game_id_account))
+    	if not len(account_asset[address]):
+    		account_asset.remove(address)
+    return ture
+```
 
 #### Register Function
 
 Register a game or a game asset to blockchain.  Append game information `Game Asset Contract address` to `map[game_id, [Game Asset Contract address]]`. If `game_id` is not in map, must create a entry in map.
 
+```
+def register(is_new_game, game_id, game_asset_contract_address):
+	if is_new_game:
+		game_id = len(game_asset_address)
+		game_asset_address[game_id] = [game_asset_contract_address]
+	else:
+		game_asset_address[game_id].append(game_asset_contract_address)
+	return game_id, len(game_asset_address[game_id])-1
+		
+```
+
 #### Unregister Function
 
 Unregister a game or a game asset from blockchain.  Remove game information `Game Asset Contract address` from `map[game_id, [Game Asset Contract address]]`. If `game_id` has not any value in map, must delete `game_id` from map.
+
+```
+def unregister(game_id, game_asset_contract_address):
+	if game_id not in game_asset_address:
+		return false
+	else:
+		game_asset_address[game_id].remove(game_asset_contract_address)
+		if not len(game_asset_address[game_id]):
+			gamse_asset_address.remove(game_id)
+	return true
+```
+
+
 
 #### Query Function
 
@@ -68,7 +125,7 @@ Adding asset data to above structure.
 
 #### Sub Function
 
-Subbing asset data to above structure.
+Subbing asset data from above structure.
 
 #### New Function
 
