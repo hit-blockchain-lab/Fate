@@ -97,8 +97,6 @@ def unregister(game_id, game_asset_contract_address):
 	return true
 ```
 
-
-
 #### Query Function
 
 TODO
@@ -109,31 +107,83 @@ The purpose of this contract is to store one game's assets state. One game could
 
 #### State Data Structure
 
-`List[asset_id_1, asset_id_2, asset_id_3...]`: a list for one game's assets
+`asset_list`: `List[asset_info_1, asset_info_2, asset_info_3...]`: a list for one game's assets information
 
-**TODO**: Need to design a structure to store assets data.
+`asset_data`: `List[asset_data_1, asset_data_2, asset_data_3...]`: asset data for one game
 
 #### Create Function
 
+```
+def create():
+	asset_list = []
+	asset_data = []
+	return success
+```
+
 #### Query Function
 
-TODO
+```
+def query(asset_info, condition):
+	asset_id = asset_list.get(asset_info)
+	data = asset_data[asset_id]
+	//the fllowing is selecting data which satisfy condition
+	...
+	
+	return data
+```
 
 #### Add Function
 
 Adding asset data to above structure.
 
+```
+def add(asset_info, condition, add_data):
+	asset_id = asset_list.get(asset_info)
+	data = asset_data[asset_id].add
+	
+	//the fllowing is adding data which satisfy condition
+	...
+	return success
+```
+
 #### Sub Function
 
 Subbing asset data from above structure.
+
+```
+def sub(asset_info, condition, sub_data):
+	asset_id = asset_list.get(asset_info)
+	data = asset_data[asset_id].add
+	
+	//the fllowing is subing data which satisfy condition
+	...
+	return success
+```
 
 #### New Function
 
 Append a new asset to list.
 
+```
+def new(asset_info,asset_data):
+	asset_list[len(asset_list)] = asset_info
+	asset_data[len(asset_data)] = asset_data
+	return success
+```
+
 #### Delete Function
 
 Remove a exist asset from list.
+
+```
+def delete(asset_info,asset_data):
+	asset_id = asset_list.get(asset_info)
+	del asset_list[asset_info]
+	del asset_data[asset_id]
+	return success
+```
+
+
 
 ## Asset Trade Contract
 
