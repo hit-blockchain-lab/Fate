@@ -22,78 +22,75 @@ The purpose of this contract is to link the blockchain address to the game playe
 
 #### State Data Structure
 
-`game_asset_address`: `map[game_id, [Game Asset Contract address]]`. A mapping from game_id to Game Asset contract address list `[contract address1, contract address2, contract address3...]` 
-
-```
-int game_id
-uint64 Game_Asset_Contract_address
-map[int,list[uint64]] game_asset_address
-```
-
-`account_asset`: `map[address,[(game_id, game_id_account)]]`. A mapping from address to game information list `[(game_id_1, game_id_1_account), (game_id_2, game_id_2_account),...]`
-
-```
-int game_id
-uint64 address
-gameAccount game_id_account
-map[uint64,list[(int,gameAccount)]] account_asset
-```
+- `Address`: the account address on blockchain
+- `Game_ID`: the unique identification for game
+- `Game`: data structure for a game about its information, such as `struct{Game_ID, Game_Name, Game_Asset_Contracts}`, `Game_Asset_Contracts` is a list of address of `Game_Asset_Contract`
+- `Games_Map`: A map for all registered games on the platform indexed by `Game_ID`,  such as `map{Game_ID_1:Game1, Game_ID_2:Game2, Game_ID_3:Game3 ...}`
+- `Account`: data structure for a user about his game accounts., such as `struct{Address, Game_Accounts}`, `Game_Accounts` is `map{Game_ID:list[Game_Account]}` 
+- `Account_Map`: A map for all registered user on the platform from `Address` to `Account`, such as `map{Address1:Account1, Address2:Account2, Address3:Account3}` 
 
 #### Bind Function
 
-Binding a game account to blockchain address. Append account information `(game_id, game_id_account)` to `map[address,[(game_id, game_id_account)]]`
+Binding a game account to blockchain address. Append `Account` to `Account_Map`
 
 ```
-def bind(address, game_id, game_id_account):
-	if address not in account_asset:
-    	account_asset[address] = [(game_id, game_id_account)]
+def bind(address, game_id, game_account):
+	if address not in Account_Map:
+		account = map{game_id:[game_account]}
+    	Account_Map[address] = account
     else:
-    	account_asset[address].append((game_id, game_id_account))
+    	if game_id not in old_account:
+    		Account_Map[address].Game_Accounts[game_id] = [game_account]
+    	else:
+    		Account_Map[address].Game_Accounts[game_id]].append(game_account)
     return true
 ```
 
 #### Unbind Function
 
-Unbinding a game account from blockchain address. Remove account information `(game_id, game_id_account)` from `map[address,[(game_id, game_id_account)]]`
+Unbinding a game account from blockchain address. 
 
 ```
-def unbind(address, game_id, game_id_account):
-	if address not in account_asset:
-    	return false
+def unbind(address, game_id, game_account):
+	if address not in Account_Map or game_id not in Account_Map[address] or game_account not in Account_Map[address].Game_Accounts[game_id]:
+    	return error
     else:
-    	account_asset[address].remove((game_id, game_id_account))
-    	if not len(account_asset[address]):
-    		account_asset.remove(address)
+    	Account_Map[address].Game_Accounts[game_id].remove(game_account)
+    	if not len(Account_Map[address].Game_Accounts[game_id]):  
+    		Account_Map[address].Game_Accounts.remove(game_id)
+    	if not len(Account_Map[address].Game_Accounts):
+    		Account_Map.remove[address]
     return ture
 ```
 
 #### Register Function
 
-Register a game or a game asset to blockchain.  Append game information `Game Asset Contract address` to `map[game_id, [Game Asset Contract address]]`. If `game_id` is not in map, must create a entry in map.
+Register a game or a game asset contract to blockchain.  
 
 ```
-def register(is_new_game, game_id, game_asset_contract_address):
+def register(is_new_game, game_id, game_name, game_asset_contract_address):
 	if is_new_game:
-		game_id = len(game_asset_address)
-		game_asset_address[game_id] = [game_asset_contract_address]
+		game_id = len(Games_Map)
+		game = Game{game_id, game_name, [game_asset_contract_address]}
+		Games_Map[game_id] = game
 	else:
-		game_asset_address[game_id].append(game_asset_contract_address)
-	return game_id, len(game_asset_address[game_id])-1
+		Games_Map[game_id].Game_Asset_Contracts.append(game_asset_contract_address)
+	return true
 		
 ```
 
 #### Unregister Function
 
-Unregister a game or a game asset from blockchain.  Remove game information `Game Asset Contract address` from `map[game_id, [Game Asset Contract address]]`. If `game_id` has not any value in map, must delete `game_id` from map.
+Unregister a game or a game asset  contract from blockchain. 
 
 ```
-def unregister(game_id, game_asset_contract_address):
-	if game_id not in game_asset_address:
-		return false
+def unregister(is_game, game_id, game_asset_contract_address):
+	if is_game:
+		Game_Map.remove(game_id)
 	else:
-		game_asset_address[game_id].remove(game_asset_contract_address)
-		if not len(game_asset_address[game_id]):
-			gamse_asset_address.remove(game_id)
+		Game_Map[game_id].Game_Asset_Contracts.remove(game_asset_contract_address)
+		if not len(Game_Map[game_id].Game_Asset_Contracts):
+			Game_Map.remove(game_id)
 	return true
 ```
 
@@ -107,9 +104,8 @@ The purpose of this contract is to store one game's assets state. One game could
 
 #### State Data Structure
 
-`asset_list`: `List[asset_info_1, asset_info_2, asset_info_3...]`: a list for one game's assets information
-
-`asset_data`: `List[asset_data_1, asset_data_2, asset_data_3...]`: asset data for one game
+- `asset_list`: `List[asset_info_1, asset_info_2, asset_info_3...]`: a list for one game's assets information
+- `asset_data`: `List[asset_data_1, asset_data_2, asset_data_3...]`: asset data for one game
 
 #### Create Function
 
@@ -230,7 +226,7 @@ The purpose of this contract is to save store state for players. One player only
 
 #### State Data Structure
 
-`store`: `struct{`
+- `store`: `struct{`
 
 ​			` id`
 
@@ -240,9 +236,9 @@ The purpose of this contract is to save store state for players. One player only
 
 ​		`}`
 
-`store_list`: `List[store1,store2,store3...]`
+- `store_list`: `List[store1,store2,store3...]`
 
-`store_infos`: `struct{`
+- `store_infos`: `struct{`
 
 ​			`name`
 
@@ -254,7 +250,7 @@ The purpose of this contract is to save store state for players. One player only
 
 ​			`}`
 
-`store_orders`:`struct{`
+- `store_orders`:`struct{`
 
 ​			`orders_count`
 
@@ -262,7 +258,7 @@ The purpose of this contract is to save store state for players. One player only
 
 ​			`}`
 
-`order`:`struct{`
+- `order`:`struct{`
 
 ​			`name`
 
