@@ -98,13 +98,15 @@ def unregister(is_game, game_id, game_asset_contract_address):
 
 TODO 
 
-## Game Asset Contract
+## Game Asset Contract(Need design)
 
-The purpose of this contract is to store one game's assets state. One game could have more contracts that mapping different type of assets. Of course, one contract can have many assets for the same game.
+The purpose of this contract is to store one game's assets state. One game could have more contracts that mapping different type of assets. Of course, one contract can have many assets for the same game. This contract would be built by game developers, and we could offer a standard template. 
 
 #### State Data Structure
 
-- `Asset_Type`: a data structure for one asset item. `Struct{asset_id, asset_type_name, asset_type_info}`
+- `Asset_ID`: the unique identification for a type of asset in one contract
+
+- `Asset_Type`: a data structure for one asset item. `Struct{Asset_ID, Asset_Type_Name, Asset_Type_Info}`
 - `Asset_Types`:  A map for one game's assets information(`Asset_Type`), such as Skins,  Equipment. Like `map{asset_id_1:Asset_Type_1, asset_id_2:Asset_Type_2, asset_id_3:Asset_Type_3}`
 - `Asset_Data_Item`: For each type of asset,  game developers must define the corresponding data storage structure `Asset_Data`.   Such as `struct{asset_data_item_id, asset_data_item_owner, asset_data_item_address}`
 - `Asset_Data`:  `list[Asset_Data_Item}`
@@ -190,17 +192,18 @@ The purpose of this contract is to handle trade.
 
 #### State Data Structure
 
-None
+- `trade_data`: data used trading. `struct{Game_ID, Game_Asset_Address, Asset_ID, Asset_Data_Item}`
+
+- `trade_src`:  trade data for the initiator. `strcut{address_src, trade_data_src}`
+- `trade_tar`: trade data for the receiver. `strcut{address_tar, trade_data_tar}`
 
 #### Trade Function
 
 Call Game Asset Contract's Add/Sub function to update asset state.
 
-```
-def trade(address_src, address_tar, game_id_src, game_id_tar, game_asset_address_src, game_asset_address_tar, data_src, data_tar)
-	 TODO
-	
-```
+
+
+#### 
 
 
 
@@ -210,16 +213,15 @@ The purpose of this contract is to handle rent.
 
 #### State Data Structure
 
-None
+- `rent_data`: data used trading. `struct{Game_ID, Game_Asset_Address, Asset_ID, Asset_Data_Item}`
+
+- `rent_src`:  trade data for the initiator. `strcut{address_src, rent_data_src}`
+- `rent_tar`: trade data for the receiver. `strcut{address_tar, rent_data_tar}`
+- `time`
 
 #### Rent Function
 
-Call Asset Trade function twice and set rent condition.
 
-```
-def rent(address_src, address_tar, game_id_src, game_id_tar, game_asset_address_src, game_asset_address_tar, data_src, data_tar, rent_time)
-	TODO
-```
 
 
 
@@ -231,7 +233,7 @@ The purpose of this contract is to save store state for players. One player only
 
 - `store`: `struct{id, store_infos, store_orders}`
 
-- `store_list`: `List[store1,store2,store3...]`
+- `store_map`: `map{store_id_1: store_1, store_id_2:store_2, store_id_3:store_3}`
 
 - `store_infos`: `struct{name, owner_address, open_date, success_orders}`
 
@@ -292,6 +294,11 @@ def revokeorder()
 ## Smart Wallet Contract(Need design)
 
 #### State Data Structure
+
+- `Wallet_Account`: user account. `struct{userid, username, password, address, money}`
+- `Wallet_Accounts`: all accounts. `map{userid: Wallet_Account}`
+
+#### Register&Bind Function
 
 #### Login Function
 
