@@ -96,7 +96,7 @@ def unregister(is_game, game_id, game_asset_contract_address):
 
 #### Query Function
 
-TODO
+TODO 
 
 ## Game Asset Contract
 
