@@ -104,8 +104,11 @@ The purpose of this contract is to store one game's assets state. One game could
 
 #### State Data Structure
 
-- `asset_list`: `List[asset_info_1, asset_info_2, asset_info_3...]`: a list for one game's assets information
-- `asset_data`: `List[asset_data_1, asset_data_2, asset_data_3...]`: asset data for one game
+- `Asset_Type`: a data structure for one asset item. `Struct{asset_id, asset_type_name, asset_type_info}`
+- `Asset_Types`:  A map for one game's assets information(`Asset_Type`), such as Skins,  Equipment. Like `map{asset_id_1:Asset_Type_1, asset_id_2:Asset_Type_2, asset_id_3:Asset_Type_3}`
+- `Asset_Data_Item`: For each type of asset,  game developers must define the corresponding data storage structure `Asset_Data`.   Such as `struct{asset_data_item_id, asset_data_item_owner, asset_data_item_address}`
+- `Asset_Data`:  `list[Asset_Data_Item}`
+- `Asset_Datas`: A map for one game's assets data,  like `map{asset_id_1:Asset_Data_1, asset_id_2:Asset_Data_2, asset_id_3:Asset_Data_3}`
 
 #### Create Function
 
@@ -226,63 +229,15 @@ The purpose of this contract is to save store state for players. One player only
 
 #### State Data Structure
 
-- `store`: `struct{`
-
-​			` id`
-
-​			`store_infos`
-
-​			`store_orders`
-
-​		`}`
+- `store`: `struct{id, store_infos, store_orders}`
 
 - `store_list`: `List[store1,store2,store3...]`
 
-- `store_infos`: `struct{`
+- `store_infos`: `struct{name, owner_address, open_date, success_orders}`
 
-​			`name`
+- `store_orders`:`struct{orders_count, orders: List[order1,order2,order3...]}`
 
-​			`owner_address`
-
-​			`open_date`
-
-​			`success_orders`
-
-​			`}`
-
-- `store_orders`:`struct{`
-
-​			`orders_count`
-
-​			`orders`: `List[order1,order2,order3...]`
-
-​			`}`
-
-- `order`:`struct{`
-
-​			`name`
-
-​			`id`
-
-​			`description`
-
-​			`time`
-
-​			`game_id`
-
-​			`asset_address`
-
-​			`asset_info`
-
-​			`asset_data`			
-
-​			`price`
-
-​			`isrent`
-
-​			`rent_time`
-
-`}`
+- `order`:`struct{name, id, description, time, game_id, asset_address, asset_info, asset_data, price, isrent, rent_time}`
 
 #### Build Function
 
